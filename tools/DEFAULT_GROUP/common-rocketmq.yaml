@@ -1,0 +1,5 @@
+spring:
+  rocketmq:
+          name-server: RocketmqCloudpush:9876
+          producer-send-msg-timeout: 3000
+          producer-group-name: ${spring.application.name}-127-0-0-1-${server.port}
