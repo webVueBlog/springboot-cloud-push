@@ -1,0 +1,44 @@
+hostip: ${hostip}
+
+server:
+  port: 9000 #内置tomcat启动的端口号(集群需不同名)
+
+eureka:
+  instance:
+    prefer-ip-address: true  # 访问路径可以显示IP地址
+    lease-renewal-interval-in-seconds: 5      # 心跳时间，即服务续约间隔时间（缺省为30s）
+    lease-expiration-duration-in-seconds: 10
+    instance-id: ${hostip}:${server.port}   #显示服务名称(ip:port集群需不同名,如果重复会覆盖之前的实例)
+#  client:
+#    service-url:
+#      defaultZone: http://10.9.217.160:8000/eureka/
+
+spring:
+  profiles:
+      active: dev
+      #引入config.yml
+      include: config
+  application:
+    name: websocket
+#  rocketmq:
+#        name-server: 10.9.217.161:9876
+#        producer-send-msg-timeout: 3000
+#        producer-group-name: ${spring.application.name}-127-0-0-1-${server.port}
+#  redis:
+#      host: 10.9.216.2
+#      #host: 192.168.99.100
+#      port: 6399
+#      timeout: 3000ms
+#      jedis:
+#        pool:
+#          max-active: 20
+#          max-idle: 8
+#          min-idle: 0
+management:
+  endpoints:
+    jmx:
+      exposure:
+        include: health,info
+        exclude:
+
+

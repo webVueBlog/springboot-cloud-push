@@ -1,0 +1,65 @@
+server:
+  port: 8003
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true  #设为true便开启通过服务中心的自动根据 serviceId 创建路由的功能
+          lowerCaseServiceId: true  #实例名自动小写
+      routes:
+      #------------------------------------------------------------------------
+        - id: portal  #id千万不能省略
+          uri: lb://portal
+          predicates:
+          - Path=/portal/**
+          filters:
+          - StripPrefix=1 #表示从二级url路径转发 请求/portal/xxxx被转化为${uri}+/xxx
+#        - id: ws  #id千万不能省略
+#          uri: ws://127.0.0.1:9000/
+#          predicates:
+#          - Path=/ws/**
+#          filters:
+#          - StripPrefix=1 #表示从二级url路径转发 请求/portal/xxxx被转化为${uri}+/xxx
+#        - id: web1_v1
+#          uri: https://www.baidu.com/
+#          predicates:
+#          - Path=/web/**
+#          - Weight= web1,1
+#          filters:
+#          - StripPrefix=1
+#        - id: web1_v2
+#          uri: https://www.163.com/
+#          predicates:
+#          - Path=/web/**
+#          - Weight= web1,1
+#          filters:
+#          - StripPrefix=1
+#  redis:
+#      #host: 127.0.0.1
+#      host: 192.168.99.100
+#      port: 6379
+#      timeout: 1000ms
+#      jedis:
+#        pool:
+#          max-active: 8
+#          max-idle: 8
+#          min-idle: 0
+  profiles:
+    active: dev
+    #引入config.yml
+    include: config
+eureka:
+  instance:
+    prefer-ip-address: true
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:8000/eureka/
+#开启actuator管理api，后面要关闭
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
